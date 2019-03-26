@@ -15,7 +15,10 @@ namespace StudentExercises5
 
         //Cohort object properties
         public int Id { get; set; }
-        public string CohortName {get; set;}
+        public string CohortName { get; set; }
 
+        //--------QUESTION------------should these be disctionaries because each instructor and student is their own object?
+        public List<Instructor> InstructorList { get; set; }
+        public List<Student> StudentList { get; set; }
     }
 }

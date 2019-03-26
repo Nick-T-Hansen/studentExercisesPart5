@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-/*Code for getting a list of instructors
+/*
+Code for getting a list of instructors
 Code for getting a single instructor
 Code for creating an instructor
 Code for editing an instructor
-Code for deleting an instructor*/
+Code for deleting an instructor
+*/
 
 namespace StudentExercises5.Controllers
 {
