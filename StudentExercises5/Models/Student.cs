@@ -20,7 +20,13 @@ namespace StudentExercises5
             CohortId = cohortId;
             ExerciseList = new List<Exercise>();
         }
+
+        public Student()
+        {
+
+        }
         */
+
         //Student object properties
         public int Id { get; set; }
         public string FirstName {get; set;}
@@ -29,6 +35,8 @@ namespace StudentExercises5
         public  int CohortId {get; set;}
 
         public List<Exercise> ExerciseList {get; set;}
+        public Cohort Cohort { get; set; }
+
 
 
     }

@@ -76,7 +76,9 @@ namespace StudentExercises5.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT E.Id, E.ExerciseName, E.ExerciseLanguage FROM Exercise e WHERE Id = @id";
+                    cmd.CommandText = @"SELECT E.Id, E.ExerciseName, E.ExerciseLanguage 
+                                        FROM Exercise e 
+                                        WHERE Id = @id";
                     cmd.Parameters.Add(new SqlParameter("@id", id));
                     SqlDataReader reader = cmd.ExecuteReader();
 
