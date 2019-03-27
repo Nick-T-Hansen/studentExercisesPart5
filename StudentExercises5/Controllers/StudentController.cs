@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-
-/*
-Code for getting a list of students (y)
-Code for getting a single student (y)
-Code for creating a student (N- 500 error)
-Code for editing a student
-Code for deleting a student (N - not tested)
-*/
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace StudentExercises5.Controllers
 {
@@ -48,7 +41,7 @@ namespace StudentExercises5.Controllers
                                         "FROM Student s " +
                                         "LEFT JOIN Cohort c " +
                                         "ON s.Cohort_id = c.Id " +
-                                        "INNER JOIN StudentExercise x " +
+                                        "LEFT JOIN StudentExercise x " +
                                         "ON s.Id = x.Student_id " +
                                         "LEFT JOIN Exercise e " +
                                         "ON x.Exercise_id = e.Id";
@@ -98,7 +91,7 @@ namespace StudentExercises5.Controllers
                                         FROM Student s
                                         LEFT JOIN Cohort c
                                         ON s.Cohort_id = c.Id
-                                        INNER JOIN StudentExercise x
+                                        LEFT JOIN StudentExercise x
                                         ON s.Id = x.Student_id
                                         LEFT JOIN Exercise e
                                         ON x.Exercise_id = e.Id
@@ -140,7 +133,7 @@ namespace StudentExercises5.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Student (FirstName, LastName, Slack, CohortId)
+                    cmd.CommandText = @"INSERT INTO Student (FirstName, LastName, Slack, Cohort_id)
                                         OUTPUT INSERTED.Id
                                         VALUES (@FirstName, @LastName, @Slack, @CohortId)";
                     cmd.Parameters.Add(new SqlParameter("@FirstName", student.FirstName));
@@ -157,9 +150,51 @@ namespace StudentExercises5.Controllers
 
         // PUT: api/Student/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] Student student)
         {
+            try
+            {
+
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"UPDATE student
+                                                SET FirstName = @FirstName,
+                                                LastName = @LastName,
+                                                Slack = @Slack,
+                                                Cohort_id = @cohortId
+                                                WHERE id = @id;";
+                        cmd.Parameters.Add(new SqlParameter("@FirstName", student.FirstName));
+                        cmd.Parameters.Add(new SqlParameter("@LastName", student.LastName));
+                        cmd.Parameters.Add(new SqlParameter("@Slack", student.Slack));
+                        cmd.Parameters.Add(new SqlParameter("@CohortId", student.CohortId));
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return new StatusCodeResult(StatusCodes.Status204NoContent);
+                        }
+                        throw new Exception("No rows affected");
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (!StudentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
+
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
@@ -186,7 +221,7 @@ namespace StudentExercises5.Controllers
             }
             catch (Exception)
             {
-                if (!ObjectExists(id))
+                if (!StudentExists(id))
                 {
                     return NotFound();
                 }
@@ -197,14 +232,14 @@ namespace StudentExercises5.Controllers
             }
         }
 
-        private bool ObjectExists(int id)
+        private bool StudentExists(int id)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @" SELECT Id, FirstName, LastName, Slack, CohortId
+                    cmd.CommandText = @" SELECT Id, FirstName, LastName, Slack, Cohort_id
                                          FROM Student
                                          WHERE Id = @id";
                     cmd.Parameters.Add(new SqlParameter("@id", id));

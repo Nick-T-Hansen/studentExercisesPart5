@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace StudentExercises5
 
@@ -23,6 +24,7 @@ namespace StudentExercises5
         public int CohortId {get; set;}
 
         public Cohort Cohort { get; set; }
+        public List<Exercise> ExerciseList { get; set; }
 
     }
 }

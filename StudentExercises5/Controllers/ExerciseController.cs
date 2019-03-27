@@ -7,13 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-/*Code for getting a list of exercises (y)
-Code for getting a single exercise (y)
-Code for creating an exercise (y)
-Code for editing an exercise (N- 405 error)
-Code for deleting an exercise (y)
-*/
-
 namespace StudentExercises5.Controllers
 {
     [Route("api/[controller]")]
@@ -133,9 +126,8 @@ namespace StudentExercises5.Controllers
                     conn.Open();
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = @"UPDATE Coffee
-                                            SET ExerciseName = @ExerciseName,
-                                                ExerciseLanguage = @ExerciseLanguage,
+                        cmd.CommandText = @"UPDATE Exercise
+                                            SET ExerciseName = @ExerciseName, ExerciseLanguage = @ExerciseLanguage
                                             WHERE Id = @id";
                         cmd.Parameters.Add(new SqlParameter("@ExerciseName", exercise.ExerciseName));
                         cmd.Parameters.Add(new SqlParameter("@ExerciseLanguage", exercise.ExerciseLanguage));
