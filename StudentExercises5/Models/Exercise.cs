@@ -7,6 +7,7 @@ Language of exercise (JavaScript, Python, CSharp, etc.)
  */
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentExercises5
 
@@ -26,7 +27,9 @@ namespace StudentExercises5
         
         //Exercise object properties
         public int Id { get; set; }
+        [Required]
         public string ExerciseName {get; set;}
+        [Required]
         public string ExerciseLanguage {get; set;}
 
 

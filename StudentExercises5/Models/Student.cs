@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentExercises5
 
@@ -31,6 +32,8 @@ namespace StudentExercises5
         public int Id { get; set; }
         public string FirstName {get; set;}
         public string LastName {get; set;}
+
+        [StringLength(12, MinimumLength = 3)]
         public string Slack {get; set;}
         public  int CohortId {get; set;}
 

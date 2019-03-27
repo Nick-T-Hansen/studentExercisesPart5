@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentExercises5
 {
@@ -15,6 +16,8 @@ namespace StudentExercises5
 
         //Cohort object properties
         public int Id { get; set; }
+        [Required]
+        [StringLength(11, MinimumLength = 2)]
         public string CohortName { get; set; }
 
         //--------QUESTION------------should these be disctionaries because each instructor and student is their own object?

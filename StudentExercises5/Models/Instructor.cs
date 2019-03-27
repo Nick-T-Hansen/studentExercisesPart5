@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentExercises5
 
@@ -18,8 +19,12 @@ namespace StudentExercises5
 
         //Instructor object properties
         public int Id { get; set; }
+        [Required]
         public string FirstName {get; set;}
+        [Required]
         public string LastName {get; set;}
+        [Required]
+        [StringLength(12, MinimumLength = 3)]
         public string Slack {get; set;}
         public int CohortId {get; set;}
 
